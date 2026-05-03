@@ -1,5 +1,3 @@
-"""Data loading tools for the Parkinson's voice project."""
-
 from pathlib import Path
 
 import pandas as pd
@@ -7,18 +5,10 @@ from sklearn.model_selection import train_test_split
 
 
 class VoiceDataset:
-    """Load and prepare the Parkinson's voice dataset.
-
-    The class reads the CSV file, checks required columns, removes the sample
-    name column, and prepares train/test data for the prediction model.
-    """
+    """Load and prepare the Parkinson's voice dataset."""
 
     def __init__(self, csv_path):
-        """Create a VoiceDataset object.
-
-        Args:
-            csv_path (str): Path to the Parkinson's CSV file.
-        """
+        """Create a VoiceDataset object."""
         self.csv_path = Path(csv_path)
         self.data = None
         self.features = []
@@ -37,12 +27,7 @@ class VoiceDataset:
         return len(self.data)
 
     def load(self):
-        """Load the CSV file and validate the required columns.
-
-        Raises:
-            FileNotFoundError: If the CSV file does not exist.
-            ValueError: If the CSV file is missing required columns.
-        """
+        """Load the CSV file and validate the required columns."""
         if not self.csv_path.exists():
             raise FileNotFoundError(f"CSV file not found: {self.csv_path}")
 
@@ -58,34 +43,16 @@ class VoiceDataset:
         return self.data
 
     def split(self, test_size=0.2, random_state=42):
-        """Split the data into training and testing sets.
-
-        Args:
-            test_size (float): Fraction of rows used for testing.
-            random_state (int): Random seed for reproducible results.
-
-        Returns:
-            tuple: X_train, X_test, y_train, y_test.
-        """
+        """Split the data into training and testing sets."""
         if self.data is None:
             self.load()
 
         X = self.data[self.features]
         y = self.data[self.target]
 
-        return train_test_split(
-            X,
-            y,
-            test_size=test_size,
-            random_state=random_state,
-            stratify=y,
-        )
+        return train_test_split(X, y, test_size=test_size, random_state=random_state)
 
     def feature_generator(self):
-        """Yield feature names one at a time.
-
-        Yields:
-            str: One feature name per iteration.
-        """
+        """Yield feature names one at a time."""
         for feature in self.features:
             yield feature

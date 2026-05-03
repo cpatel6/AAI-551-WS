@@ -1,28 +1,14 @@
-"""Helper functions for the Parkinson's voice project."""
-
 import math
 from pathlib import Path
 
 
 def validate_status_value(value):
-    """Check whether a status value is valid.
-
-    Args:
-        value (int): 0 means healthy, and 1 means Parkinson's.
-
-    Returns:
-        bool: True if the value is valid.
-    """
+    """Check whether a status value is valid (0 or 1)."""
     return value in (0, 1)
 
 
 def summarize_dataset(dataset, output_dir):
-    """Save a simple dataset summary to a text file.
-
-    Args:
-        dataset (VoiceDataset): Loaded dataset object.
-        output_dir (str): Folder where the summary will be saved.
-    """
+    """Save a simple dataset summary to a text file."""
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
 
@@ -47,6 +33,6 @@ def summarize_dataset(dataset, output_dir):
         f"Frequency features: {frequency_features}",
     ]
 
-    with open(output_path / "dataset_summary.txt", "w", encoding="utf-8") as file:
+    with open(output_path / "dataset_summary.txt", "w") as file:
         for line in lines:
             file.write(line + "\n")

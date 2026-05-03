@@ -1,5 +1,3 @@
-"""Main program for Parkinson's disease detection using voice features."""
-
 from data_loader import VoiceDataset
 from model import ParkinsonPredictor
 from utils import summarize_dataset, validate_status_value
