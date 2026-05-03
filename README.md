@@ -37,7 +37,7 @@ parkinsons_project_final/
 - `scikit-learn` — machine learning model training and evaluation
 - `joblib` — saving and loading the trained model
 - `json` (built-in) — writing evaluation metrics to file
-- `os` (built-in) — handling file paths and output directories
+- `pathlib` (built-in) — handling file paths and output directories
 
 ## Requirements Covered
 
@@ -51,7 +51,7 @@ parkinsons_project_final/
 - Mutable data types: lists and dictionaries
 - Immutable data types: strings, integers, floats, and tuples
 - Operator overloads: `__str__()`, `__len__()`, and `__gt__()`
-- Part 2 features: `filter()`, `lambda`, list comprehension, built-in modules (`json`, `os`), generator function, set operations, and `if __name__ == "__main__"`
+- Part 2 features: `filter()`, `lambda`, list comprehension, built-in modules (`json`, `pathlib`, `math`, `time`), generator function, set operations, and `if __name__ == "__main__"`
 - Docstrings and comments are included in the Python files
 
 ## How to Run
@@ -91,4 +91,4 @@ Confusion matrix: [[7, 3], [0, 29]]
 
 Charmilkumar Vijaykumar Patel: Set up the GitHub repository and managed version control, sourced and provided the Parkinson's voice dataset, and contributed to Python code implementation.
 
-Yunyang Zhang: Contributed to Python code implementation, handled data preprocessing and program structure, wrote the README documentation.
+Yunyang Zhang: Contributed to Python code implementation, handled data preprocessing and program structure, and wrote the README documentation.
