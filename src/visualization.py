@@ -47,6 +47,7 @@ class VisualizationManager:
         ax.set_title("Label Distribution", fontsize=14, fontweight="bold")
         ax.set_ylabel("Number of Samples")
         ax.set_ylim(0, max(counts.values) * 1.15)
+        plt.show()
         return self._save(fig, filename)
 
     def plot_confusion_matrix(self, cm, filename="confusion_matrix.png"):
@@ -72,45 +73,33 @@ class VisualizationManager:
         ax.set_ylabel("Actual Label")
         ax.set_xlabel("Predicted Label")
         return self._save(fig, filename)
+    
+    def plot_feature_correlation(self, data, filename="feature_correlation.png"):
+        """Plot a heatmap of the correlation between all the features."""
+        corr = data.corr()
 
-    def plot_feature_correlation(self, data, target_column="status", top_n=15, filename="feature_correlation.png"):
-        """Plot a heatmap of the correlation between the top features and the target.
+        fig, ax = plt.subplots(figsize=(12, 10))
+        plt.imshow(corr, cmap='viridis', aspect='auto', interpolation='nearest')
+        plt.colorbar()
+        ax.set_title("Correlation Heatmap", fontsize=16)
+        ax.grid(False)
 
-        Parameters
-        ----------
-        top_n : int
-            Number of features most correlated with the target to include.
-        """
-        feature_cols = [col for col in data.columns if col not in ["name", target_column]]
-        corr_with_target = data[feature_cols].corrwith(data[target_column]).abs().sort_values(ascending=False)
-        top_features = corr_with_target.head(top_n).index.tolist()
+        plt.xticks(range(len(corr.columns)), corr.columns, rotation=90, fontsize=8)
+        plt.yticks(range(len(corr.columns)), corr.columns, fontsize=8)
 
-        subset = data[top_features + [target_column]]
-        corr_matrix = subset.corr()
+        for i in range(len(corr.columns)):
+            for j in range(len(corr.columns)):
+                value = corr.iloc[i, j]
+                text_color = "white" if value <= 0.0 else "black"
+                plt.text(j, i, f"{value:.2f}", ha='center', va='center', color=text_color, fontsize=8)
 
-        fig, ax = plt.subplots(figsize=(12, 9))
-        sns.heatmap(
-            corr_matrix,
-            annot=True,
-            fmt=".2f",
-            cmap="coolwarm",
-            center=0,
-            square=True,
-            linewidths=0.5,
-            ax=ax,
-        )
-        ax.set_title("Feature Correlation Heatmap (Top Features)", fontsize=14, fontweight="bold")
-        plt.xticks(rotation=45, ha="right")
-        plt.yticks(rotation=0)
+        plt.tight_layout()
+        plt.show()
         return self._save(fig, filename)
+    
 
-    def plot_feature_importance(self, data, target_column="status", top_n=15, filename="feature_importance.png"):
+    def plot_feature_importance(self, data, target_column="status", filename="feature_importance.png"):
         """Plot the absolute correlation of each feature with the target as a proxy for importance.
-
-        Parameters
-        ----------
-        top_n : int
-            Number of top features to display.
         """
         feature_cols = [col for col in data.columns if col not in ["name", target_column]]
         importance = (
@@ -118,7 +107,6 @@ class VisualizationManager:
             .corrwith(data[target_column])
             .abs()
             .sort_values(ascending=True)
-            .tail(top_n)
         )
 
         fig, ax = plt.subplots(figsize=(8, 6))
@@ -130,7 +118,7 @@ class VisualizationManager:
 
         for i, value in enumerate(importance.values):
             ax.text(value + 0.005, i, f"{value:.3f}", va="center", fontsize=8)
-
+        plt.show()
         return self._save(fig, filename)
 
     def plot_roc_curve(self, y_true, y_scores, filename="roc_curve.png"):
