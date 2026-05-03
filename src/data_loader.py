@@ -42,6 +42,11 @@ class VoiceDataset:
 
         # Use list comprehension to keep all biomedical voice columns only.
         self.features = [col for col in self.data.columns if col not in ["name", "status"]]
+
+        # for i in range(len(self.data[0,1:])):
+        #     self.data[self.data[0,1+i]] = self.data[self.data[0,1+i]].astype(float)
+        self.data = self.data.drop(columns='name')
+
         return self.data
 
     def split(self, test_size=0.2, random_state=42):

@@ -1,5 +1,6 @@
 Parkinson's Voice Dataset Summary
 Rows: 195
+Missing Values: 0
 Features used: 22
 Status counts: {1: 147, 0: 48}
 Parkinson's samples: 75.38%

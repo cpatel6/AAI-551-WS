@@ -48,9 +48,7 @@ class ParkinsonPredictor:
         predictions = self.classifier.predict(X_test_scaled)
 
         cm = confusion_matrix(y_test, predictions)
-        cm_list = []
-        for row in cm:
-            cm_list.append(list(row))
+        cm_list = cm.tolist()
 
         self.metrics = {
             "accuracy": accuracy_score(y_test, predictions),

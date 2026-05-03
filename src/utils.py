@@ -1,6 +1,8 @@
 import math
 import os
-
+from scipy.stats import skew
+import numpy as np
+import pandas as pd
 
 def validate_status_value(value):
     """Check whether a status value is valid (0 or 1)."""
@@ -33,9 +35,10 @@ def summarize_dataset(dataset, output_dir):
     # Use the math module for a simple rounded percentage value.
     positive_percent = math.floor(positive_rate * 10000) / 100
 
-    lines = [
+    summary = [
         "Parkinson's Voice Dataset Summary",
         "Rows: " + str(len(dataset)),
+        "Missing Values: " + str(dataset.load().isnull().sum().sum()),
         "Features used: " + str(len(dataset.features)),
         "Status counts: " + str(status_counts),
         "Parkinson's samples: " + str(positive_percent) + "%",
@@ -44,5 +47,54 @@ def summarize_dataset(dataset, output_dir):
 
     output_path = os.path.join(output_dir, "dataset_summary.txt")
     with open(output_path, "w") as file:
-        for line in lines:
+        for line in summary:
             file.write(line + "\n")
+
+    return summary
+
+def summarize_vars(dataframe, columns, output, filename):
+    rows = []
+    for col in columns:
+        s = dataframe[col].dropna()
+
+        mean_val = s.mean()
+        std_val = s.std(ddof=1)
+        var_val = s.var(ddof=1)
+
+        q1 = s.quantile(0.25)
+        q3 = s.quantile(0.75)
+        iqr = q3 - q1
+        rng = s.max() - s.min()
+
+        skew_val = skew(s, bias=False)
+
+        cv = (std_val / mean_val * 100) if mean_val != 0 else np.nan
+
+        rows.append({
+            "Variable": col,
+            "Count": int(s.size),
+            "Mean": float(mean_val),
+            "Std (sample)": float(std_val),
+            "Variance (sample)": float(var_val),
+            "CV (%)": float(cv) if not np.isnan(cv) else None,
+            "Min": float(s.min()),
+            "Q1": float(q1),
+            "Median": float(s.median()),
+            "Q3": float(q3),
+            "Max": float(s.max()),
+            "IQR": float(iqr),
+            "Range": float(rng),
+            "Skewness": float(skew_val),
+        })
+
+    cols_order = [
+        "Variable", "Count", "Mean", "Std (sample)", "Variance (sample)", "CV (%)",
+        "Min", "Q1", "Median", "Q3", "Max", "IQR", "Range", "Skewness"
+    ]
+
+    statSummary = pd.DataFrame(rows)[cols_order]
+    try:
+        statSummary.to_csv(f"{output / filename} .csv")
+    except Exception as e:
+        print(f'[EXCEPTION] File not created from Summary: {e}')
+    return statSummary

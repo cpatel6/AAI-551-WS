@@ -1,5 +1,5 @@
 {
-    "saved_at": "2026-05-03 15:54:16",
+    "saved_at": "2026-05-03 16:10:34",
     "model": "SVM with StandardScaler",
     "metrics": {
         "accuracy": 0.8974358974358975,
