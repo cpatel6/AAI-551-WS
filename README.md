@@ -1,148 +1,94 @@
-# Parkinson’s Disease Detection Using Biomedical Voice Features
+# Parkinson's Disease Detection Using Biomedical Voice Features
 
-## Team Members
-
-- Charmilkumar Vijaykumar Patel
-- Yunyang Zhang
-
-## Project Description
-
-This project focuses on Parkinson’s disease detection using biomedical voice measurement features. Parkinson’s disease is a progressive neurological disorder that can affect movement, coordination, and speech. Since voice patterns may change in people with Parkinson’s disease, biomedical voice data can be used as a helpful source for prediction.
-
-The goal of this project is to build a Python-based program that loads a Parkinson’s voice dataset, prepares the data, trains a machine learning model, evaluates the model performance, and reports the prediction results.
-
-This project demonstrates Python programming skills such as data input/output, object-oriented programming, exception handling, use of external libraries, docstrings, comments, and advanced Python features.
-
-## Dataset
-
-The dataset used in this project is a Parkinson’s disease biomedical voice dataset. The dataset is stored in the data folder.
-
-The target column is status. It indicates whether a voice sample is related to Parkinson’s disease. The other columns contain biomedical voice measurements such as frequency, jitter, shimmer, and noise-related features.
+Team members: Charmilkumar Vijaykumar Patel, Yunyang Zhang
 
 ## Project Overview
 
-The program performs the following steps:
+This project uses biomedical voice features to predict whether a voice sample is related to Parkinson's disease. The program reads the Parkinson's voice dataset from a CSV file, prepares the data, trains a machine learning model, evaluates the model, and saves the results.
 
-1. Load the Parkinson’s disease voice dataset from a CSV file.
-2. Check and prepare the dataset.
-3. Separate the input features and target label.
-4. Split the dataset into training and testing sets.
-5. Train a machine learning classification model.
-6. Predict the testing data labels.
-7. Evaluate the model using accuracy score, confusion matrix, and classification report.
-8. Display the final results.
+The dataset contains 195 voice samples. The `name` column is used as a sample ID and is not used for training. The `status` column is the target label:
 
-## Dependencies / Libraries
+- `0`: healthy
+- `1`: Parkinson's disease
 
-This project uses the following Python libraries:
+## Files
 
-- pandas
-- numpy
-- matplotlib
-- scikit-learn
-- time
+```text
+parkinsons_project_final/
+├── data/
+│   └── parkinsons.csv
+├── outputs/
+│   ├── dataset_summary.txt
+│   ├── metrics.json
+│   ├── parkinsons_model.joblib
+│   └── test_predictions.csv
+├── src/
+│   ├── data_loader.py
+│   ├── main.py
+│   ├── model.py
+│   └── utils.py
+├── README.md
+└── requirements.txt
+```
 
-To install the required libraries, run:
+## Dependencies
 
-pip install pandas numpy matplotlib scikit-learn
+- `pandas` — data loading and preprocessing
+- `scikit-learn` — machine learning model training and evaluation
+- `joblib` — saving and loading the trained model
+- `json` (built-in) — writing evaluation metrics to file
+- `os` (built-in) — handling file paths and output directories
 
-## File Structure
+## Requirements Covered
 
-AAI-551-WS/
-- data/
-- src/
-- README.md
-- parkinsons_detection.ipynb
+- Two classes: `VoiceDataset` and `ParkinsonPredictor`
+- Class relationship: `main.py` uses `VoiceDataset` to prepare data and passes it to `ParkinsonPredictor`
+- At least two functions: `validate_status_value()` and `summarize_dataset()`
+- Advanced libraries: `pandas`, `scikit-learn`, and `joblib`
+- Exception handling: missing CSV file and invalid/missing data values
+- Data I/O: reads `parkinsons.csv` and writes output files
+- Loops and if statements: used in `main.py` and helper functions
+- Mutable data types: lists and dictionaries
+- Immutable data types: strings, integers, floats, and tuples
+- Operator overloads: `__str__()`, `__len__()`, and `__gt__()`
+- Part 2 features: `filter()`, `lambda`, list comprehension, built-in modules (`json`, `os`), generator function, set operations, and `if __name__ == "__main__"`
+- Docstrings and comments are included in the Python files
 
-## File / Folder Description
+## How to Run
 
-### data/
+Install the required libraries:
 
-This folder contains the Parkinson’s disease biomedical voice dataset used for this project.
+```bash
+pip install -r requirements.txt
+```
 
-### src/
+Run the project from the main project folder:
 
-This folder contains Python source files used for dataset loading, model training, evaluation, and helper functions.
+```bash
+python src/main.py
+```
 
-### parkinsons_detection.ipynb
+## Output
 
-This is the main Jupyter Notebook for running the full project. It loads the dataset, trains the model, evaluates the results, and displays the final output.
+After running the program, the `outputs` folder will contain:
 
-### README.md
+- `dataset_summary.txt`: basic dataset information
+- `metrics.json`: model evaluation results
+- `parkinsons_model.joblib`: saved trained model
+- `test_predictions.csv`: actual and predicted test labels
 
-This file explains the project purpose, dataset, dependencies, file structure, running instructions, and team member contributions.
+## Model Result
 
-## How to Run the Program
+Using an 80/20 train-test split with random state 42, the model result is:
 
-### Step 1: Download or clone the repository
+```text
+Accuracy: 0.9231
+F1 score: 0.9508
+Confusion matrix: [[7, 3], [0, 29]]
+```
 
-Download or clone this repository from GitHub.
+## Team Contributions
 
-### Step 2: Install required libraries
+Charmilkumar Vijaykumar Patel: Set up the GitHub repository and managed version control, sourced and provided the Parkinson's voice dataset, and contributed to Python code implementation.
 
-Run the following command:
-
-pip install pandas numpy matplotlib scikit-learn
-
-### Step 3: Open the Jupyter Notebook
-
-Open the file:
-
-parkinsons_detection.ipynb
-
-### Step 4: Run all cells
-
-Run the notebook from top to bottom. The notebook will load the dataset, train the model, evaluate the prediction results, and display the final model performance.
-
-## Python Requirements Satisfied
-
-This project is designed to satisfy the required Python programming features, including:
-
-- Classes and object-oriented programming
-- Functions
-- Data input/output using a CSV file
-- Exception handling for missing files and invalid data
-- Loops and conditional statements
-- Mutable and immutable data types
-- Docstrings and meaningful comments
-- Use of external libraries
-- Operator overloading
-- List comprehension
-- Set operations
-- Generator function
-- Built-in Python module
-
-## Exception Handling
-
-The program includes exception handling for common errors, such as:
-
-- Missing dataset file
-- Missing required columns
-- Invalid prediction before model training
-- Invalid or empty dataset input
-
-These checks help make the program more reliable and easier to understand.
-
-## Model Evaluation
-
-The model is evaluated using:
-
-- Accuracy score
-- Confusion matrix
-- Classification report
-
-These evaluation methods help show how well the model predicts Parkinson’s disease status based on biomedical voice features.
-
-## Main Contributions of Each Team Member
-
-### Charmilkumar Vijaykumar Patel
-
-
-
-### Yunyang Zhang
-
-
-
-## Notes
-
-This project is for educational purposes. The model is not intended for real medical diagnosis. It only demonstrates how biomedical voice features can be used in a Python-based machine learning project.
+Yunyang Zhang: Contributed to Python code implementation, handled data preprocessing and program structure, wrote the README documentation.
