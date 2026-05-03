@@ -82,13 +82,13 @@ After running the program, the `outputs` folder will contain:
 Using an 80/20 train-test split with random state 42, the model result is:
 
 ```text
-Accuracy: 0.9231
-F1 score: 0.9508
-Confusion matrix: [[7, 3], [0, 29]]
+Accuracy: 0.8974
+F1 score: 0.9412
+Confusion matrix: [[3, 4], [0, 32]]
 ```
 
 ## Team Contributions
 
 Charmilkumar Vijaykumar Patel: Set up the GitHub repository and managed version control, sourced and provided the Parkinson's voice dataset, and contributed to Python code implementation.
 
-Yunyang Zhang: Contributed to Python code implementation, handled data preprocessing and program structure, and wrote the README documentation.
+Yunyang Zhang: Contributed to Python code implementation, handled data preprocessing and program structure, wrote the README documentation, and was responsible for overall project documentation and final testing.
