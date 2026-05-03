@@ -1,0 +1,18 @@
+{
+    "saved_at": "2026-05-03 15:54:16",
+    "model": "SVM with StandardScaler",
+    "metrics": {
+        "accuracy": 0.8974358974358975,
+        "f1_score": 0.9411764705882353,
+        "confusion_matrix": [
+            [
+                3,
+                4
+            ],
+            [
+                0,
+                32
+            ]
+        ]
+    }
+}
