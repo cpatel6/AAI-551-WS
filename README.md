@@ -91,4 +91,4 @@ Confusion matrix: [[3, 4], [0, 32]]
 
 Charmilkumar Vijaykumar Patel: Set up the GitHub repository and managed version control, sourced and provided the Parkinson's voice dataset, and contributed to Python code implementation.
 
-Yunyang Zhang: Contributed to Python code implementation, handled data preprocessing and program structure, wrote the README documentation, and was responsible for overall project documentation and final testing.
+Yunyang Zhang: Contributed to Python code implementation, handled data preprocessing and program structure, and wrote the README and output documentation.
