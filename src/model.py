@@ -1,6 +1,6 @@
 import json
+import os
 import time
-from pathlib import Path
 
 import joblib
 import pandas as pd
@@ -23,25 +23,39 @@ class ParkinsonPredictor:
         """Return a short description of the predictor."""
         if not self.metrics:
             return "ParkinsonPredictor: not trained"
-        return f"ParkinsonPredictor: accuracy={self.metrics['accuracy']:.4f}, f1={self.metrics['f1_score']:.4f}"
+        accuracy = round(self.metrics["accuracy"], 4)
+        f1 = round(self.metrics["f1_score"], 4)
+        return "ParkinsonPredictor: accuracy=" + str(accuracy) + ", f1=" + str(f1)
 
     def __gt__(self, other):
         """Compare two predictors by F1 score."""
-        return self.metrics.get("f1_score", 0) > other.metrics.get("f1_score", 0)
+        self_f1 = 0
+        other_f1 = 0
+        if "f1_score" in self.metrics:
+            self_f1 = self.metrics["f1_score"]
+        if "f1_score" in other.metrics:
+            other_f1 = other.metrics["f1_score"]
+        return self_f1 > other_f1
 
     def train(self, X_train, y_train):
         """Train the SVM model."""
-        X_train_scaled = self.scaler.fit_transform(X_train)
+        X_train_scaled = self.scaler.fit(X_train).transform(X_train)
         self.classifier.fit(X_train_scaled, y_train)
 
     def evaluate(self, X_test, y_test):
         """Evaluate the model and return metrics."""
         X_test_scaled = self.scaler.transform(X_test)
         predictions = self.classifier.predict(X_test_scaled)
+
+        cm = confusion_matrix(y_test, predictions)
+        cm_list = []
+        for row in cm:
+            cm_list.append(list(row))
+
         self.metrics = {
-            "accuracy": float(accuracy_score(y_test, predictions)),
-            "f1_score": float(f1_score(y_test, predictions)),
-            "confusion_matrix": confusion_matrix(y_test, predictions).tolist(),
+            "accuracy": accuracy_score(y_test, predictions),
+            "f1_score": f1_score(y_test, predictions),
+            "confusion_matrix": cm_list,
         }
         return self.metrics
 
@@ -52,10 +66,11 @@ class ParkinsonPredictor:
 
     def save_outputs(self, output_dir):
         """Save the trained model and metrics to files."""
-        output_path = Path(output_dir)
-        output_path.mkdir(parents=True, exist_ok=True)
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
 
-        joblib.dump(self.classifier, output_path / "parkinsons_model.joblib")
+        model_path = os.path.join(output_dir, "parkinsons_model.joblib")
+        joblib.dump(self.classifier, model_path)
 
         run_info = {
             "saved_at": time.strftime("%Y-%m-%d %H:%M:%S"),
@@ -63,17 +78,20 @@ class ParkinsonPredictor:
             "metrics": self.metrics,
         }
 
-        with open(output_path / "metrics.json", "w") as file:
+        metrics_path = os.path.join(output_dir, "metrics.json")
+        with open(metrics_path, "w") as file:
             json.dump(run_info, file, indent=4)
 
     def save_predictions(self, X_test, y_test, output_dir):
         """Save prediction results for the test set."""
-        output_path = Path(output_dir)
-        output_path.mkdir(parents=True, exist_ok=True)
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
 
         predictions = self.predict(X_test)
+        actual = list(y_test)
         results = pd.DataFrame({
-            "actual_status": y_test.values,
+            "actual_status": actual,
             "predicted_status": predictions,
         })
-        results.to_csv(output_path / "test_predictions.csv", index=False)
+        output_path = os.path.join(output_dir, "test_predictions.csv")
+        results.to_csv(output_path, index=False)

@@ -23,7 +23,7 @@ def main():
         # Loop 2: validate status values.
         for value in dataset.data["status"].unique():
             if not validate_status_value(value):
-                raise ValueError(f"Invalid status value: {value}")
+                raise ValueError("Invalid status value: " + str(value))
 
         summarize_dataset(dataset, OUTPUT_DIR)
 
@@ -37,7 +37,7 @@ def main():
         print(dataset)
         print(predictor)
         print("Confusion matrix:", metrics["confusion_matrix"])
-        print(f"Results saved to: {OUTPUT_DIR}")
+        print("Results saved to: " + OUTPUT_DIR)
 
     except FileNotFoundError as error:
         print("File error:", error)
