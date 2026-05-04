@@ -17,12 +17,13 @@ class ParkinsonPredictor:
     def __init__(self, random_state=42):
         """Initialize the predictor.
         
-        Args:
+        Parameters:
             random_state (int): Random state for reproducibility
         """
         self.random_state = random_state
         self.metrics = {}
         self.feature_importances = None
+        self._trained = False
 
     def __str__(self):
         """Return a short description of the predictor."""
@@ -41,13 +42,16 @@ class ParkinsonPredictor:
     def evaluate(self, X_test, y_test):
         """Evaluate the model and return metrics.
         
-        Args:
+        Parameters:
             X_test: Test features
             y_test: Test labels
             
         Returns:
             dict: Dictionary containing accuracy, f1_score, confusion_matrix, and classification_report
         """
+        if not self._trained:
+            raise AttributeError(f"{self.__class__.__name__} has not been trained yet. Call train() first.")
+            
         predictions = self.predict(X_test)
 
         cm = confusion_matrix(y_test, predictions)
@@ -65,9 +69,12 @@ class ParkinsonPredictor:
     def save_outputs(self, output_dir, modelName):
         """Save the trained model and metrics to files.
         
-        Args:
+        Parameters:
             output_dir (str): Directory path to save outputs
         """
+        if not self._trained:
+            raise AttributeError(f"{self.__class__.__name__} has not been trained yet. Call train() first.")
+        
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
@@ -94,11 +101,14 @@ class ParkinsonPredictor:
     def save_predictions(self, X_test, y_test, output_dir, modelName):
         """Save prediction results for the test set.
         
-        Args:
+        Parameters:
             X_test: Test features
             y_test: Test labels
             output_dir (str): Directory path to save predictions
         """
+        if not self._trained:
+            raise AttributeError(f"{self.__class__.__name__} has not been trained yet. Call train() first.")
+        
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
@@ -128,17 +138,18 @@ class SVMPredictor(ParkinsonPredictor):
     def train(self, X_train, y_train):
         """Train the SVM model.
         
-        Args:
+        Parameters:
             X_train: Training features
             y_train: Training labels
         """
         X_train_scaled = self.scaler.fit(X_train).transform(X_train)
         self.classifier.fit(X_train_scaled, y_train)
+        self._trained = True
 
     def predict(self, X):
         """Predict Parkinson's status for input rows.
         
-        Args:
+        Parameters:
             X: Input features to predict on
             
         Returns:
@@ -158,7 +169,7 @@ class RandomForestPredictor(ParkinsonPredictor):
     def __init__(self, n_estimators=300, max_depth=None, random_state=42):
         """Create the Random Forest model.
         
-        Args:
+        Parameters:
             n_estimators (int): Number of trees in the forest. Default: 300
             max_depth (int): Maximum depth of the tree. Default: None (unlimited)
             random_state (int): Random state for reproducibility
@@ -176,16 +187,17 @@ class RandomForestPredictor(ParkinsonPredictor):
     def train(self, X_train, y_train):
         """Train the Random Forest model.
         
-        Args:
+        Parameters:
             X_train: Training features
             y_train: Training labels
         """
         self.classifier.fit(X_train, y_train)
+        self._trained = True
 
     def predict(self, X):
         """Predict Parkinson's status for input rows.
         
-        Args:
+        Parameters:
             X: Input features to predict on
             
         Returns:
@@ -196,7 +208,7 @@ class RandomForestPredictor(ParkinsonPredictor):
     def evaluate(self, X_test, y_test):
         """Evaluate the model and extract feature importances.
         
-        Args:
+        Parameters:
             X_test: Test features
             y_test: Test labels
             
@@ -210,7 +222,7 @@ class RandomForestPredictor(ParkinsonPredictor):
     def get_feature_importances(self, feature_cols=None):
         """Get feature importances from the Random Forest model.
         
-        Args:
+        Parameters:
             feature_cols (list): List of feature column names
             
         Returns:

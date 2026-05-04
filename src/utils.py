@@ -8,14 +8,24 @@ def validate_status_value(value):
     """Check whether a status value is valid (0 or 1)."""
     return value in (0, 1)
 
+def validate_required_columns(df, required_columns):
+    """Raise ValueError if any required columns are missing from the DataFrame."""
+    available_columns = set(df.columns)
+    required_set = set(required_columns)
+    missing_columns = required_set - available_columns
+
+    if missing_columns:
+        raise ValueError(f"Missing required columns: {missing_columns}")
+    return True
+
 
 def summarize_dataset(dataset, output_dir):
     """Save a simple dataset summary to a text file."""
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-
     if dataset.data is None:
         raise ValueError("Dataset is not loaded. Call dataset.load() first.")
+    
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
 
     # Count how many samples are healthy (0) and Parkinson's (1).
     status_series = dataset.data["status"].value_counts()

@@ -1,5 +1,5 @@
 {
-    "saved_at": "2026-05-03 21:52:35",
+    "saved_at": "2026-05-04 00:08:56",
     "model_type": "SVMPredictor",
     "model": "SVM with RBF kernel and StandardScaler",
     "metrics": {
