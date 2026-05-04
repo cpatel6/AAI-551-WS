@@ -1,0 +1,46 @@
+{
+    "saved_at": "2026-05-03 21:52:30",
+    "model_type": "RandomForestPredictor",
+    "model": "Random Forest (n_estimators=300, class_weight=balanced)",
+    "metrics": {
+        "accuracy": 0.9487179487179487,
+        "f1_score": 0.9696969696969697,
+        "confusion_matrix": [
+            [
+                5,
+                2
+            ],
+            [
+                0,
+                32
+            ]
+        ],
+        "classification_report": {
+            "0": {
+                "precision": 1.0,
+                "recall": 0.7142857142857143,
+                "f1-score": 0.8333333333333334,
+                "support": 7.0
+            },
+            "1": {
+                "precision": 0.9411764705882353,
+                "recall": 1.0,
+                "f1-score": 0.9696969696969697,
+                "support": 32.0
+            },
+            "accuracy": 0.9487179487179487,
+            "macro avg": {
+                "precision": 0.9705882352941176,
+                "recall": 0.8571428571428572,
+                "f1-score": 0.9015151515151516,
+                "support": 39.0
+            },
+            "weighted avg": {
+                "precision": 0.951734539969834,
+                "recall": 0.9487179487179487,
+                "f1-score": 0.9452214452214454,
+                "support": 39.0
+            }
+        }
+    }
+}

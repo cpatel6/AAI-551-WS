@@ -1,0 +1,46 @@
+{
+    "saved_at": "2026-05-03 21:52:35",
+    "model_type": "SVMPredictor",
+    "model": "SVM with RBF kernel and StandardScaler",
+    "metrics": {
+        "accuracy": 0.8974358974358975,
+        "f1_score": 0.9411764705882353,
+        "confusion_matrix": [
+            [
+                3,
+                4
+            ],
+            [
+                0,
+                32
+            ]
+        ],
+        "classification_report": {
+            "0": {
+                "precision": 1.0,
+                "recall": 0.42857142857142855,
+                "f1-score": 0.6,
+                "support": 7.0
+            },
+            "1": {
+                "precision": 0.8888888888888888,
+                "recall": 1.0,
+                "f1-score": 0.9411764705882353,
+                "support": 32.0
+            },
+            "accuracy": 0.8974358974358975,
+            "macro avg": {
+                "precision": 0.9444444444444444,
+                "recall": 0.7142857142857143,
+                "f1-score": 0.7705882352941176,
+                "support": 39.0
+            },
+            "weighted avg": {
+                "precision": 0.9088319088319088,
+                "recall": 0.8974358974358975,
+                "f1-score": 0.8799396681749624,
+                "support": 39.0
+            }
+        }
+    }
+}

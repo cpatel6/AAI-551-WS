@@ -1,8 +1,10 @@
 import os
 
 import matplotlib.pyplot as plt
+from matplotlib.patches import Patch
 import numpy as np
 import seaborn as sns
+from pandas.plotting import scatter_matrix
 
 
 class VisualizationManager:
@@ -72,6 +74,7 @@ class VisualizationManager:
         ax.set_title("Confusion Matrix", fontsize=14, fontweight="bold")
         ax.set_ylabel("Actual Label")
         ax.set_xlabel("Predicted Label")
+        plt.show()
         return self._save(fig, filename)
     
     def plot_feature_correlation(self, data, filename="feature_correlation.png"):
@@ -93,6 +96,42 @@ class VisualizationManager:
                 text_color = "white" if value <= 0.0 else "black"
                 plt.text(j, i, f"{value:.2f}", ha='center', va='center', color=text_color, fontsize=8)
 
+        plt.tight_layout()
+        plt.show()
+        return self._save(fig, filename)
+    
+    def plot_pairplot(self, data, cols_to_plot, filename ="pairplot.png"):
+        """Pairplot of Key Variables for Parkinson’s Classification"""
+
+        color_map = {0: "tab:blue", 1: "tab:red"}
+        colors = data['status'].map(color_map).values
+
+
+        fig = plt.figure(figsize=(12, 10))
+        axs = scatter_matrix(
+            data[cols_to_plot],
+            figsize=(12, 10),
+            diagonal="hist",
+            c=colors,
+            alpha=0.6,
+            s=12,
+            marker="o",
+        )
+
+        for ax in axs.ravel():
+            ax.tick_params(axis="both", labelsize=7)
+
+
+        handles = [
+            Patch(color="tab:blue", label="Healthy (0)"),
+            Patch(color="tab:red",  label="Parkinson’s (1)")
+        ]
+        fig.legend(handles=handles, loc="upper center", ncol=2, frameon=False, fontsize=10)
+
+        fig.suptitle(
+            "Pairplot of Key Variables for Parkinson’s Classification",
+            fontsize=22,
+            y=0.97)
         plt.tight_layout()
         plt.show()
         return self._save(fig, filename)
@@ -148,6 +187,7 @@ class VisualizationManager:
         ax.set_ylabel("True Positive Rate")
         ax.set_title("Receiver Operating Characteristic (ROC) Curve", fontsize=14, fontweight="bold")
         ax.legend(loc="lower right")
+        plt.show()
         return self._save(fig, filename)
 
     def plot_cross_validation_scores(self, cv_scores, filename="cross_validation_scores.png"):
@@ -181,6 +221,7 @@ class VisualizationManager:
         ax.set_ylabel("Score")
         ax.set_title("Cross-Validation Scores", fontsize=14, fontweight="bold")
         ax.legend()
+        plt.show()
         return self._save(fig, filename)
 
     def plot_feature_distributions(self, data, target_column="status", top_n=6, filename="feature_distributions.png"):
@@ -222,6 +263,7 @@ class VisualizationManager:
 
         fig.suptitle("Feature Distributions by Class", fontsize=14, fontweight="bold", y=1.01)
         fig.tight_layout()
+        plt.show()
         return self._save(fig, filename)
 
     def plot_model_comparison(self, results, filename="model_comparison.png"):
@@ -267,4 +309,5 @@ class VisualizationManager:
         ax.set_ylabel("Score")
         ax.set_title("Model Comparison", fontsize=14, fontweight="bold")
         ax.legend()
+        plt.show()
         return self._save(fig, filename)
