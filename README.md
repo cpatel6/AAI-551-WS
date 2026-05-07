@@ -12,7 +12,7 @@ The main objective is to build a well-structured Python program that solves a re
 
 ### Key Features
 - **Data Processing:** Loads and preprocesses 195 voice samples from the Parkinson's dataset
-- **Machine Learning:** Trains a classification model to distinguish healthy voices from Parkinson's-affected voices
+- **Machine Learning:** Train two classification models to distinguish healthy voices from Parkinson's-affected voices
 - **Model Persistence:** Saves and loads trained models for reproducibility
 - **Performance Analysis:** Generates metrics (accuracy, F1-score, confusion matrix) and visualizations
 - **Modular Architecture:** Separates concerns across multiple Python modules and a Jupyter Notebook
@@ -32,10 +32,14 @@ pip install -r requirements.txt
 
 Required libraries:
 - pandas
-- numpy
-- matplotlib
 - scikit-learn
+- joblib
+- matplotlib>=3.5.0
+- seaborn>=0.12.0
+- numpy
 - pytest
+- pytest-cov
+- scipy
 - jupyter
 - notebook
 
@@ -70,7 +74,7 @@ AAI-551-WS/
 
 ## How to Use
 
-### Option A – Jupyter Notebook (recommended)
+### Jupyter Notebook (Run all the cells one by one to get all the outputs of written code)
 ```bash
 jupyter notebook parkinsons_detection.ipynb
 ```
@@ -109,7 +113,7 @@ Confusion Matrix: [[3, 4], [0, 32]]
 | Functions             | `validate_status_value()`, `summarize_dataset()`, and additional preprocessing functions                                        |
 | Advanced Libraries    | `pandas` (data manipulation), `scikit-learn` (Random Forest, SVM, metrics)                                                      |
 | Exception Handling    | Handles missing CSV files, invalid data values, and runtime errors (2+ scenarios)                                               |
-| Pytest Tests          | Unit tests in `tests/` directory (3+ test files, multiple test cases)                                                           |
+| Pytest Tests          | Unit tests in `tests/` directory (3 test files, multiple test cases)                                                           |
 | Data I/O              | Reads `parkinsons.csv`, writes JSON metrics and CSV predictions                                                                 |
 | Loops & Conditionals  | Uses `for`, `while`, and `if/elif/else` statements                                                                              |
 | Data Types            | Mutable: lists, dicts; Immutable: strings, tuples, numbers                                                                      |
